@@ -929,7 +929,7 @@ footer {
   .cases-grid { grid-template-columns: 1fr 1fr; }
 
   section { padding: 88px 0; }
-  .hero { padding: 100px 0 80px; }
+  .hero { padding: 0; }
 }
 
 @media (min-width: 1024px) {
