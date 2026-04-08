@@ -188,7 +188,8 @@ section:nth-child(even) {
   display: flex;
   align-items: flex-start;
   background: var(--bg);
-  border-bottom: var(--border);
+  border-bottom: none;
+  padding: 0;
   position: relative;
   overflow: hidden;
 }
