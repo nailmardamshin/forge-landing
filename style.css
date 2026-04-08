@@ -672,6 +672,8 @@ section:nth-child(even) .section-label {
   box-shadow: var(--shadow);
   overflow: hidden;
   transition: transform 0.15s, box-shadow 0.15s;
+  display: flex;
+  flex-direction: column;
 }
 
 .competitor-card:hover {
@@ -700,6 +702,7 @@ section:nth-child(even) .section-label {
   font-size: var(--text-sm);
   background: var(--orange);
   font-weight: 600;
+  margin-top: auto;
 }
 
 /* ===== Cases ===== */
