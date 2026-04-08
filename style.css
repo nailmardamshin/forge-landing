@@ -221,11 +221,7 @@ section:nth-child(even) {
 }
 
 .hero .section-label {
-  border-color: transparent;
-  background: transparent;
-  color: var(--text-muted);
   font-size: var(--text-xs);
-  padding: 0;
 }
 
 .hero h1 {
@@ -976,7 +972,11 @@ footer {
 }
 
 @media (min-width: 1024px) {
-  .trigger-grid { grid-template-columns: repeat(3, 1fr); }
+  .trigger-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .trigger-card:nth-child(1) { grid-column: span 2; }
+  .trigger-card:nth-child(5) { grid-column: span 2; }
 
   /* Steps — horizontal with connector line */
   .steps-grid {
