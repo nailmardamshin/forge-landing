@@ -23,21 +23,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Open first barrier by default
   const firstBarrier = document.querySelector('.barrier');
   if (firstBarrier) firstBarrier.classList.add('open');
 
-  // Marquee drag-to-scroll
+  // Marquee drag-to-scroll (seamless)
   const strip = document.querySelector('.marquee-strip');
   const track = document.querySelector('.marquee-track');
   if (strip && track) {
     let isDragging = false;
-    let startX, scrollStart;
+    let startX;
+    let offset = 0;
+    let rafId = null;
+    const speed = 1; // px per frame (~60fps = ~60px/sec)
 
+    // Stop CSS animation, use JS animation instead for seamless control
+    track.style.animation = 'none';
+
+    // Half width = one full set of logos (duplicate wraps)
+    function getHalfWidth() {
+      return track.scrollWidth / 2;
+    }
+
+    function animate() {
+      if (!isDragging) {
+        offset -= speed;
+      }
+      const half = getHalfWidth();
+      // Wrap seamlessly
+      if (offset <= -half) offset += half;
+      if (offset > 0) offset -= half;
+      track.style.transform = `translateX(${offset}px)`;
+      rafId = requestAnimationFrame(animate);
+    }
+
+    rafId = requestAnimationFrame(animate);
+
+    // Mouse drag
     strip.addEventListener('mousedown', (e) => {
       isDragging = true;
       startX = e.clientX;
-      track.style.animationPlayState = 'paused';
       strip.style.cursor = 'grabbing';
       e.preventDefault();
     });
@@ -45,9 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
       const dx = e.clientX - startX;
-      const current = parseFloat(getComputedStyle(track).transform.split(',')[4]) || 0;
-      track.style.animation = 'none';
-      track.style.transform = `translateX(${current + dx}px)`;
+      offset += dx;
       startX = e.clientX;
     });
 
@@ -55,34 +77,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isDragging) return;
       isDragging = false;
       strip.style.cursor = 'grab';
-      // Resume animation from current position
-      const current = parseFloat(getComputedStyle(track).transform.split(',')[4]) || 0;
-      track.style.animation = '';
-      track.style.animationPlayState = 'running';
     });
 
     strip.style.cursor = 'grab';
 
-    // Touch support
+    // Touch drag
     strip.addEventListener('touchstart', (e) => {
       isDragging = true;
       startX = e.touches[0].clientX;
-      track.style.animationPlayState = 'paused';
     }, { passive: true });
 
     strip.addEventListener('touchmove', (e) => {
       if (!isDragging) return;
       const dx = e.touches[0].clientX - startX;
-      const current = parseFloat(getComputedStyle(track).transform.split(',')[4]) || 0;
-      track.style.animation = 'none';
-      track.style.transform = `translateX(${current + dx}px)`;
+      offset += dx;
       startX = e.touches[0].clientX;
     }, { passive: true });
 
     strip.addEventListener('touchend', () => {
       isDragging = false;
-      track.style.animation = '';
-      track.style.animationPlayState = 'running';
     });
   }
 });

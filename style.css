@@ -306,7 +306,7 @@ section:nth-child(even) {
 }
 
 .marquee-logo-sm {
-  height: 36px;
+  height: 28px;
 }
 
 @keyframes marquee {
