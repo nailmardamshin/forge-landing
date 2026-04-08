@@ -168,6 +168,10 @@ section:nth-child(even) {
   background: var(--bg-alt);
 }
 
+section:nth-child(even) .section-label {
+  background: var(--white);
+}
+
 .section-label {
   display: inline-block;
   font-family: var(--font-display);
