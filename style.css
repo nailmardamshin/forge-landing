@@ -920,7 +920,7 @@ section:nth-child(even) .section-label {
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px;
-  align-items: start;
+  align-items: center;
 }
 
 .cta-card-text h2 {
