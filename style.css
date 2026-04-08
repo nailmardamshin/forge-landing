@@ -426,9 +426,9 @@ section:nth-child(even) .section-label {
 }
 
 .col-before {
-  color: #555;
+  color: #999;
   text-decoration: line-through;
-  text-decoration-color: #ccc;
+  text-decoration-color: #999;
   text-decoration-thickness: 1.5px;
 }
 
@@ -916,6 +916,71 @@ footer {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ===== Mobile table → cards ===== */
+@media (max-width: 640px) {
+  .aha-table-wrap {
+    overflow-x: visible;
+    border: none;
+    box-shadow: none;
+  }
+
+  .aha-table { min-width: 0; }
+  .aha-table thead { display: none; }
+
+  .aha-table,
+  .aha-table tbody,
+  .aha-table tr,
+  .aha-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .aha-table tr {
+    border: var(--border-thick);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    background: var(--white);
+  }
+
+  .aha-table td {
+    padding: 12px 16px;
+    border-bottom: var(--border);
+    font-size: var(--text-sm);
+    width: 100% !important;
+  }
+
+  .aha-table td:first-child {
+    font-size: var(--text-base);
+    border-right: none;
+    background: var(--black);
+    color: var(--white);
+    white-space: normal;
+  }
+
+  .aha-table td:nth-child(2) {
+    width: 100% !important;
+  }
+
+  .aha-table td:nth-child(3) {
+    width: 100% !important;
+    background: var(--orange-light);
+    font-weight: 600;
+    border-bottom: none;
+  }
+
+  .aha-table td:last-child {
+    border-bottom: none;
+  }
+
+  .aha-table tr:hover td {
+    background: inherit;
+  }
+
+  .aha-table td:first-child::before { content: none; }
+  .aha-table .col-before::before { content: "Сейчас: "; font-weight: 700; color: var(--text); text-decoration: none; }
+  .aha-table .col-after::before { content: "После AI: "; font-weight: 700; }
 }
 
 /* ===== Mobile small ===== */
