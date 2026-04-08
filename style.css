@@ -700,7 +700,7 @@ section:nth-child(even) .section-label {
 .competitor-card .comp-forge {
   padding: 16px 20px;
   font-size: var(--text-sm);
-  background: var(--orange-light);
+  background: var(--orange);
   font-weight: 600;
   margin-top: auto;
   border-top: var(--border);
