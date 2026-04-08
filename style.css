@@ -199,9 +199,9 @@ nav .container {
   z-index: 99;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 80px 20px 40px;
+  align-items: flex-start;
+  gap: 0;
+  padding: 80px 40px 40px;
 }
 
 .mobile-menu.active {
@@ -211,24 +211,44 @@ nav .container {
 .mobile-menu a {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   color: var(--text);
   text-decoration: none;
+  padding: 14px 0;
+  border-bottom: var(--border);
+  width: 100%;
+  display: block;
+  transition: color 0.1s, padding-left 0.15s;
+}
+
+.mobile-menu a:first-child {
+  border-top: var(--border);
 }
 
 .mobile-menu a:hover {
   color: var(--orange);
+  padding-left: 12px;
   text-decoration: none;
 }
 
 .mobile-menu-cta {
-  margin-top: 16px;
-  padding: 16px 40px;
+  margin-top: 28px;
+  padding: 18px 40px !important;
   background: var(--orange);
   color: var(--black) !important;
-  border: var(--border-thick);
+  border: var(--border-thick) !important;
   box-shadow: var(--shadow);
-  font-size: var(--text-base) !important;
+  font-size: var(--text-lg) !important;
+  text-align: center;
+  width: auto !important;
+  display: inline-block !important;
+}
+
+.mobile-menu-cta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-lg);
+  padding-left: 40px !important;
+  color: var(--black) !important;
 }
 
 @media (max-width: 640px) {
