@@ -178,7 +178,7 @@ section:nth-child(even) {
 
 /* ===== Hero ===== */
 .hero-viewport {
-  height: calc(100dvh - 72px);
+  min-height: calc(100dvh - 72px);
   display: flex;
   flex-direction: column;
 }
@@ -887,7 +887,15 @@ footer {
 /* ===== Mobile small ===== */
 @media (max-width: 480px) {
   .hero-inner {
-    padding: 0 20px;
+    padding: 20px 20px 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 8vw, 2.6rem);
+  }
+
+  .hero .subtitle {
+    margin-bottom: 28px;
   }
 
   .hero .cta-row {
@@ -903,6 +911,18 @@ footer {
 
   .hero .cta-sub {
     max-width: 100%;
+  }
+
+  .marquee-strip {
+    padding: 16px 0;
+  }
+
+  .marquee-logo {
+    height: 32px;
+  }
+
+  .marquee-track span {
+    font-size: 0.9rem;
   }
 
   .final-cta .btn-primary,
