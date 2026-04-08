@@ -526,9 +526,9 @@ section:nth-child(even) .section-label {
   background: var(--orange);
   border: var(--border-thick);
   box-shadow: var(--shadow-xl);
-  padding: 48px 36px;
+  padding: 40px 36px;
   font-size: var(--text-lg);
-  line-height: 1.75;
+  line-height: 1.7;
   position: relative;
 }
 
@@ -538,7 +538,9 @@ section:nth-child(even) .section-label {
 }
 
 .point-b p + p {
-  margin-top: 4px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid var(--black);
 }
 
 /* ===== Steps ===== */
