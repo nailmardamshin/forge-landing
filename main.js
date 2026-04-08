@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDragging = false;
     let startX;
     let offset = 0;
-    let currentSpeed = 1;
-    let targetSpeed = 1;
+    let currentSpeed = 1.8;
+    let targetSpeed = 1.8;
     let velocity = 0;
 
     track.style.animation = 'none';
@@ -98,10 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hover: slow down
     strip.addEventListener('mouseenter', () => {
-      if (!isDragging) targetSpeed = 0.3;
+      if (!isDragging) targetSpeed = 0.5;
     });
     strip.addEventListener('mouseleave', () => {
-      targetSpeed = 1;
+      targetSpeed = 1.8;
     });
 
     // Mouse drag
@@ -147,6 +147,20 @@ document.addEventListener('DOMContentLoaded', () => {
     strip.addEventListener('touchend', () => {
       isDragging = false;
     });
+  }
+
+  // === Point B entrance — own observer with high threshold ===
+  const pointB = document.querySelector('.point-b');
+  if (pointB) {
+    const pbObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          pbObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    pbObserver.observe(pointB);
   }
 
   // === Nav shadow on scroll ===

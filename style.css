@@ -999,7 +999,7 @@ footer {
   .fade-in.visible .step {
     opacity: 1 !important; transform: none !important; animation: none !important;
   }
-  .point-b { transform: none !important; }
+  .point-b { transform: none !important; opacity: 1 !important; }
   .step:not(:last-child)::after { transform: none !important; animation: none !important; }
   .hero .section-label,
   .hero h1,
