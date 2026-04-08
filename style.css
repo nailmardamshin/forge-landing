@@ -148,7 +148,7 @@ nav .container {
 
 /* Burger */
 .burger {
-  display: none;
+  display: flex; z-index: 101; position: relative;
   background: none;
   border: none;
   cursor: pointer;
@@ -547,18 +547,19 @@ section:nth-child(even) .section-label {
   font-weight: 700;
   font-size: 5rem;
   line-height: 1;
-  opacity: 0.06;
+  color: var(--orange);
+  opacity: 0.07;
   pointer-events: none;
 }
 
-.trigger-card:nth-child(1)::after { content: '↗'; color: var(--orange); }
-.trigger-card:nth-child(2)::after { content: '?'; color: var(--blue); }
-.trigger-card:nth-child(3)::after { content: '!'; color: var(--blue); }
-.trigger-card:nth-child(4)::after { content: '#'; color: var(--orange); }
-.trigger-card:nth-child(5)::after { content: '»'; color: var(--orange); }
+.trigger-card:nth-child(1)::after { content: '↗'; }
+.trigger-card:nth-child(2)::after { content: '?'; }
+.trigger-card:nth-child(3)::after { content: '!'; }
+.trigger-card:nth-child(4)::after { content: '#'; }
+.trigger-card:nth-child(5)::after { content: '»'; }
 
-.trigger-card:nth-child(2) { border-left-color: var(--blue); }
-.trigger-card:nth-child(3) { border-left-color: var(--blue); }
+.trigger-card:nth-child(2) { border-left-color: var(--orange); }
+.trigger-card:nth-child(3) { border-left-color: var(--orange); }
 .trigger-card:nth-child(4) { border-left-color: var(--orange); }
 .trigger-card:nth-child(5) { border-left-color: var(--orange); }
 
@@ -899,7 +900,7 @@ section:nth-child(even) .section-label {
   font-weight: 700;
   font-size: 7rem;
   line-height: 1;
-  color: var(--black);
+  color: var(--orange);
   opacity: 0.07;
   pointer-events: none;
 }
@@ -1150,7 +1151,7 @@ footer {
 
 /* Point B decorative arrow */
 .point-b::before {
-  content: '→';
+  content: '◆';
   position: absolute;
   right: -10px;
   bottom: -30px;
@@ -1158,8 +1159,8 @@ footer {
   font-weight: 700;
   font-size: 10rem;
   line-height: 1;
-  color: var(--black);
-  opacity: 0.08;
+  color: var(--orange);
+  opacity: 0.07;
   pointer-events: none;
   z-index: 0;
 }
@@ -1237,7 +1238,7 @@ footer {
   content: 'AI';
   position: absolute;
   right: 0;
-  bottom: 15%;
+  top: 5%;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 14rem;
@@ -1252,7 +1253,7 @@ footer {
 
 @keyframes ai-fade {
   to {
-    opacity: 0.05;
+    opacity: 0.07;
     transform: translateY(0);
   }
 }
@@ -1262,8 +1263,7 @@ footer {
   .trigger-grid { display: flex; flex-direction: column; }
   .trigger-card:nth-child(4) { order: 5; }
   .trigger-card:nth-child(5) { order: 4; }
-  .hero-inner::after { font-size: 7rem; right: 10px; bottom: 5%; }
-  @keyframes ai-fade { to { opacity: 0.08; transform: translateY(0); } }
+  .hero-inner::after { font-size: 7rem; right: 10px; top: 0; }
 }
 
 /* ===== Mobile table → cards ===== */
@@ -1320,6 +1320,14 @@ footer {
   }
 
   .aha-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Fix: restore internal borders on last card */
+  .aha-table tr:last-child td {
+    border-bottom: var(--border);
+  }
+  .aha-table tr:last-child td:last-child {
     border-bottom: none;
   }
 
