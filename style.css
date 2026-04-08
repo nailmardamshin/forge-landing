@@ -508,9 +508,13 @@ section:nth-child(even) .section-label {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.75rem;
-  color: var(--orange);
+  color: var(--black);
   margin-bottom: 0;
   padding: 20px 0;
+}
+
+.job-card h3 {
+  color: var(--orange);
 }
 
 .job-card > div:last-child {
