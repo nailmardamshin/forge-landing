@@ -385,7 +385,10 @@ section:nth-child(even) {
   color: var(--white);
 }
 
+.aha-table th:nth-child(1) { width: 22%; }
+.aha-table th:nth-child(2) { width: 30%; }
 .aha-table th:nth-child(3) {
+  width: 48%;
   background: var(--orange);
   color: var(--black);
 }
@@ -400,9 +403,13 @@ section:nth-child(even) {
 .aha-table td:first-child {
   font-family: var(--font-display);
   font-weight: 700;
-  white-space: nowrap;
+  white-space: normal;
   border-right: var(--border);
+  width: 22%;
 }
+
+.aha-table td:nth-child(2) { width: 30%; }
+.aha-table td:nth-child(3) { width: 48%; background: var(--orange-light); }
 
 .aha-table tr:hover td {
   background: var(--orange-light);
@@ -412,7 +419,12 @@ section:nth-child(even) {
   border-bottom: none;
 }
 
-.col-before { color: var(--text-muted); }
+.col-before {
+  color: var(--text);
+  text-decoration: line-through;
+  opacity: 0.4;
+}
+
 .col-after {
   color: var(--text);
   font-weight: 600;
