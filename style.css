@@ -159,7 +159,7 @@ nav .container {
 
 /* ===== Sections ===== */
 section {
-  padding: 72px 0;
+  padding: 56px 0;
   border-bottom: var(--border);
 }
 
@@ -820,7 +820,7 @@ section:nth-child(even) .section-label {
 /* ===== Final CTA ===== */
 .final-cta {
   text-align: center;
-  padding: 88px 0;
+  padding: 64px 0;
   background: var(--black);
   color: var(--white);
 }
@@ -927,8 +927,9 @@ footer {
 /* ===== Mobile trigger card reorder (alternate colors) ===== */
 @media (max-width: 640px) {
   .trigger-grid { display: flex; flex-direction: column; }
-  .trigger-card:nth-child(3) { order: 4; }
+  .trigger-card:nth-child(3) { order: 5; }
   .trigger-card:nth-child(4) { order: 3; }
+  .trigger-card:nth-child(5) { order: 4; }
 }
 
 /* ===== Mobile table → cards ===== */
@@ -1060,7 +1061,7 @@ footer {
   .competitor-grid { grid-template-columns: 1fr 1fr; }
   .cases-grid { grid-template-columns: 1fr 1fr; }
 
-  section { padding: 88px 0; }
+  section { padding: 64px 0; }
   .hero { padding: 0 !important; }
 }
 
