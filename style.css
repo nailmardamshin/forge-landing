@@ -426,9 +426,9 @@ section:nth-child(even) {
 }
 
 .col-before {
-  color: #999;
+  color: #555;
   text-decoration: line-through;
-  text-decoration-color: #666;
+  text-decoration-color: #ccc;
   text-decoration-thickness: 1.5px;
 }
 
