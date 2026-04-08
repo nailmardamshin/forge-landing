@@ -807,7 +807,6 @@ section:nth-child(even) .section-label {
 
 .guarantee-card h3 {
   font-size: var(--text-base);
-  color: var(--orange);
   position: relative;
   z-index: 1;
 }
