@@ -1179,8 +1179,9 @@ footer {
   .aha-table td:first-child {
     font-size: var(--text-base);
     border-right: none;
-    background: var(--black);
-    color: var(--white);
+    background: var(--white);
+    color: var(--text);
+    border-bottom: var(--border-thick);
     white-space: normal;
   }
 
