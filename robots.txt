@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nailmardamshin.github.io/forge/sitemap.xml
+Sitemap: https://forge-ai.io/sitemap.xml

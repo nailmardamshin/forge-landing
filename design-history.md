@@ -290,10 +290,20 @@ Soft neobrutalism. 12 секций. Container 900px. Mobile-first. Деплой 
 - FAQ DOM-to-JSON-LD 5/5 byte-exact (Google примет rich snippets)
 - Lighthouse audit — пока не прогнан (требует ручной запуск в Chrome DevTools)
 
-**Что осталось SEO (после привязки кастомного домена):**
-- Глобально заменить `nailmardamshin.github.io/forge` → `новый-домен` в index.html / robots.txt / sitemap.xml
-- Google Search Console + Yandex Webmaster (требуют верификацию домена)
+**Что осталось SEO:**
+- Google Search Console + Yandex Webmaster (подать sitemap https://forge-ai.io/sitemap.xml)
 - Analytics (GA4 / Я.Метрика) — отдельный спринт с cookie-banner и политикой ПДн
+
+**Кастомный домен forge-ai.io (09.04.2026):**
+- Привязан к Vercel-деплою
+- 12 placeholder'ов `nailmardamshin.github.io/forge` → `forge-ai.io` в `index.html`
+  (canonical, og:url, og:image×2, og:image:secure_url×2, twitter:image×2,
+  JSON-LD `@id` для ProfessionalService/WebSite + их `url`/`logo`/`image`,
+  publisher `@id` reference)
+- `sitemap.xml` `<loc>` обновлён
+- `robots.txt` Sitemap URL обновлён
+- OG image cache buster `?v=1` → `?v=2` — чтобы Telegram/Facebook перезапросили превью
+  под новым URL и не отдавали кешированную старую картинку
 
 ### Lighthouse audit (09.04.2026)
 

@@ -5,9 +5,8 @@
 ## Pending
 
 ### SEO / аналитика
-- [ ] Google Search Console + Yandex Webmaster (после привязки домена)
+- [ ] Google Search Console + Yandex Webmaster (подать sitemap https://forge-ai.io/sitemap.xml, подтвердить владение доменом)
 - [ ] Analytics (GA4 или Я.Метрика) — отдельный спринт с cookie-banner и политикой ПДн
-- [ ] Обновить canonical/og:url/sameAs на кастомный домен (сейчас github.io placeholder)
 
 ### Решено не делать
 - Section labels pill vs ghost — оставили pill глобально, hero исключение (ghost)
@@ -70,6 +69,7 @@
 - [x] **Lighthouse desktop: 99/100/100/100** (Perf/A11y/BP/SEO)
 - [x] **Lighthouse mobile: 96/100/100/100** (Perf/A11y/BP/SEO)
 - [x] a11y footer fix: контраст #666→#999, orange underlined Telegram link
+- [x] Кастомный домен **https://forge-ai.io/** — canonical, og:url, og:image, twitter:image, sitemap, robots, JSON-LD @id — всё обновлено, OG cache buster v1→v2
 
 ### Мобильная адаптация
 - [x] Полный проход по всем блокам на 375/360/320 — ноль horizontal overflow
