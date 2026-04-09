@@ -5,8 +5,29 @@
 ## Pending
 
 ### SEO / аналитика
-- [ ] Google Search Console + Yandex Webmaster (подать sitemap https://forge-ai.io/sitemap.xml, подтвердить владение доменом)
-- [ ] Analytics (GA4 или Я.Метрика) — отдельный спринт с cookie-banner и политикой ПДн
+- [ ] Google Search Console + Yandex Webmaster
+  - Подтвердить владение forge-ai.io (DNS TXT через Vercel)
+  - Подать sitemap https://forge-ai.io/sitemap.xml
+  - Настроить мониторинг покрытия и позиций
+
+- [ ] Аналитика — отдельный спринт (решить GA4 vs Я.Метрика, подготовить legal)
+  1. **Выбрать платформу:** GA4 (удобнее для int), Я.Метрика (лучше для ru-рынка + Вебвизор), или обе
+  2. **Legal:** политика обработки ПДн + cookie-banner на сайте (обязательно по 152-ФЗ)
+     - Текст политики (юрист или шаблон из iubenda/tilda)
+     - Cookie-banner с выбором (Essential / Analytics / All)
+     - Gate на инициализацию трекеров до согласия
+  3. **Events для трека:**
+     - `lead_form_open` (открыта модалка)
+     - `lead_form_submit` (успешная отправка)
+     - `cta_click` (hero / final / nav) с source label
+     - `section_view` (scroll-depth: 25/50/75/100%)
+     - `external_click` (Telegram, Tetraform)
+  4. **UTM-конвенция** для outbound ссылок (если будет реклама/контент-маркетинг)
+  5. **Dashboard:** конверсия hero-CTA → форма → отправка, bounce-rate по источникам
+  6. **Интеграция** с Airtable (FORGE CRM Leads) — атрибуция лида к источнику
+
+- [ ] Rich Results Test на forge-ai.io — убедиться что FAQPage даёт звёздочки в выдаче (https://search.google.com/test/rich-results)
+- [ ] Schema.org validator на forge-ai.io — финальная валидация ProfessionalService и WebSite
 
 ### Решено не делать
 - Section labels pill vs ghost — оставили pill глобально, hero исключение (ghost)
