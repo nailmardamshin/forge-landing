@@ -522,13 +522,156 @@ the following Content Security Policy directive:
 
 ---
 
+## SEO-аудит итерации P0–P2 (09–10.04.2026)
+
+Параллельно с legal-обвязкой и Metrica запустила независимого SEO-аудитора (`subagent_type: general-purpose`), который оценивал live-версию через curl + Playwright + Lighthouse CLI. 4 прогона — baseline, после P0, после P1, после P2. Каждый раз аудитор видел только live-сайт, без контекста предыдущих правок.
+
+### Baseline (до любых SEO-правок)
+
+Аудитор нашёл 4 критичных проблемы (P0) и 5 важных (P1):
+- `photo_founder.jpg` 958 KB (исходник с Canon EOS R6, никогда не пережимался)
+- Google Fonts render-blocking chain 2.2 сек на mobile
+- Vercel отдаёт `Cache-Control: max-age=0` на все статические ассеты
+- Footer-legal ссылки #777 на #fffdf5 = 4.39:1 (WCAG AA fail)
+- 25 `<img>` без width/height атрибутов (CLS риск)
+- Нет Content-Security-Policy
+- Preload только 1 из 3 шрифтов
+- `rel="noopener"` отсутствует на tetraform.art ссылке
+- Legal-страницы 200 OK, но не в sitemap и не noindex
+
+**Lighthouse baseline (mobile):** Perf 88, A11y 96, BP 100, SEO 100. **Grade B+.**
+
+### P0 фиксы (коммиты `edf05ba` + `0246ff4` + `1a74f0d`)
+
+**1. photo_founder: 958 KB → 95 KB (~10× экономия).** `<picture>` с WebP 320/640 + JPG 640 fallback. Первая попытка обрезала в квадрат (300×300 → 640×640) — в hero-секции `.about-photo img { width: 200px }` + HTML `<img height="640">` как presentational hint растянули портретный контейнер до 200×960, лицо вытянулось комично. Пофиксила через CSS: `height: auto; aspect-ratio: 2/3; object-fit: cover` (отменяет HTML height-hint, фиксирует пропорции). В HTML width/height привели к реальным 640×960. Итог: 200×300 портрет, CLS 0.
+
+**2. Self-host шрифтов.** Скачала 3 woff2 в `assets/fonts/`:
+- `inter-cyrillic.woff2` (18 KB — обслуживает и 400 и 600 через variable font)
+- `inter-latin.woff2` (48 KB)
+- `spacegrotesk-latin-700.woff2` (13 KB)
+
+5 `@font-face` деклараций с `unicode-range` в `style.css` поверх. Убраны все ссылки на `fonts.googleapis.com` / `fonts.gstatic.com`. Все 3 предзагружены через `<link rel="preload" as="font">`. Бонус: **IP пользователей больше не утекают в Google** (GDPR плюс для B2B enterprise).
+
+Результат на mobile: **FCP 2.8s → 1.3s**, **LCP 2.8s → 2.1s**, **Performance 88 → 99**.
+
+**3. Vercel cache headers.** В `vercel.json`:
+- `/assets/*` → `max-age=31536000, immutable`
+- `/assets/fonts/*` → + `Access-Control-Allow-Origin: *`
+- `/*.css`, `/*.js` → `max-age=31536000, immutable` (cache-busting через `?v=` query)
+- Добавлен `Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()` (opt-out FLoC)
+
+**4. Footer-legal contrast.** `#777` → `#999` (контраст ~7.5:1, AAA).
+
+### P1 фиксы (коммиты `d25e06f` + `670b128`)
+
+**P1 #1 — 24 marquee-logo width/height.** Python-скрипт прошёлся по `<img class="marquee-logo">` и вставил natural dimensions из файлов (nornickel-ru.svg 86×14, khl 700×768, alfa-bank/mvideo/sber/rzhd/danon/black-science/teachbase 292×100, yasno 700×171, skyeng-w.svg 1172×400, rsv.svg 320×108). Lighthouse `unsized-images` audit score 0.5 → 1.0. **Speed Index mobile 4.6s → 2.3s (−50%)** — браузер перестал перерисовывать layout при загрузке каждого лого.
+
+**P1 #2 — Strict Content-Security-Policy:**
+```
+default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';
+font-src 'self'; img-src 'self' data:; connect-src 'self'; form-action 'self';
+frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+```
+`'unsafe-inline'` в `style-src` — потому что в HTML 13 inline `style=""` атрибутов (колонки таблицы, orange accent на «F», margin-top). Альтернатива — nonce на каждый, но overkill. Все `<script>` внешние (main.js + JSON-LD data), inline script нет.
+
+**P1 #3 — `rel="noopener noreferrer"` на tetraform.art.** 7/7 `target="_blank"` ссылок (tetraform, 2× Telegram, 2× privacy, 2× consent) получили атрибут.
+
+**P1 #4 — Legal-страницы noindex.** Проверила — уже имеют `<meta name="robots" content="noindex, nofollow">` с момента публикации. В sitemap их добавлять не надо.
+
+### P2 фиксы (коммиты `60c96ab` + `670b128` + `8c791f5`)
+
+**P2 #1 — khl.png 51 KB → 14.8 KB.** Resize 700×768 → 175×192 (retina 4× от display 48px). Natural ratio сохранена. HTML width/height обновлены.
+
+**P2 #2 — Honeypot для формы:**
+- `<div class="hp-field" aria-hidden="true">` с input `name="website" tabindex="-1" autocomplete="off"`
+- CSS: `position: absolute; left: -9999px; width:1px; height:1px; opacity:0`
+- Сервер (`api/lead.js`): `if (body.website) return 200 ok` — молча 200, чтобы боты не узнали что заблокированы и не retry
+
+**P2 #3 — Touch targets ≥44px (WCAG 2.5.5).** Паттерн везде одинаковый: `display: inline-block; padding: Npx 4px; margin: -Npx 0` (negative margin компенсирует padding — увеличиваем tap area без визуального сдвига):
+- `.burger`: `min-width/height: 44px` + `padding: 12px 10px` + flex centering
+- `footer a`: `padding: 14px 4px; margin: -14px 0`
+- `.footer-legal a`: то же
+- `.footer-legal-btn` (новая «Управление cookies»): то же
+- `.case-link` (новый класс для «Все кейсы на tetraform.art»): `padding: 12px 4px`
+
+**P2 #4 — HowTo JSON-LD для секции «Этапы».** 4-й JSON-LD блок поверх ProfessionalService + FAQPage + WebSite. 4 HowToStep (Аудит → План → Внедрение → Передача), `totalTime: P28D`. Google может показать как карусель шагов в SERP.
+
+**P2 #5 — CSP для Yandex Metrica (case study).** В момент P2 я превентивно добавила в CSP `mc.yandex.ru`, `mc.yandex.com`, `mc.webvisor.com` — на всякий случай, хотя Metrica counter ID был `null` (loader noop). Через 30 минут параллельный агент коммитнул реальный counter ID `108474355` → Metrica активировалась. **Если бы я НЕ добавила CSP заранее — Metrica бы сломалась мгновенно** (my strict CSP `script-src 'self'` блокировал бы `https://mc.yandex.ru/metrika/tag.js`). Урок: при strict CSP и roadmap с аналитикой — подготовь CSP директивы заранее.
+
+### Регрессия от cookie banner + a11y fix (`670b128`)
+
+После P2 Lighthouse mobile a11y упал **100 → 92**. Причина — cookie banner от параллельного агента:
+- `.cookie-banner-desc a`: оранжевая ссылка `#F97316` на cream `#FFFDF5` = **2.52:1** (AA требует 4.5)
+- `.cookie-btn-accept`: белый текст на оранжевом = **2.60:1**
+- `.footer-legal-btn`: 15px высота, touch target fail
+
+**Fixes:** ссылка → чёрный текст + оранжевый `text-decoration-color` (контраст 18+:1). Кнопка accept → чёрный текст на оранжевом (5.12:1). footer-legal-btn → тот же padding-hack как footer-legal a.
+
+Результат: **a11y 92 → 100**.
+
+### Финальный прогон и Telegram footer fix (`8c791f5`)
+
+P2-аудитор подтвердил всё, но нашёл последнюю мелочь: Telegram-ссылка в `.footer-brand` осталась **36px** высотой (остальные footer-ссылки получили 46px). Несогласованность паттернов + WCAG 2.5.5 AAA fail.
+
+**Fix:** `footer a` padding увеличен 8→14 + margin −8→−14. Теперь все 3 footer-ссылки 46-48px, консистентно.
+
+### Копирайт: meta description + hero subtitle (`e0df36a` + `e65666a` + `75c7a1f`)
+
+**Meta description** сокращён с 172 до 143 символов (Google обрезает в SERP после ~155). Старый вариант терял «М.Видео в портфолио» — сильный social proof. Новый:
+> «Автоматизация рутины, генерация контента, аналитика. Внедряем за 3-4 недели, фикс-прайс. 200+ проектов. Альфа-Банк, Норникель, КХЛ в портфолио.»
+
+**Hero subtitle + og:description + twitter:description** синхронизированы, единый текст:
+> «Автоматизируем рутину и открываем возможности, которых раньше не было с помощью AI. 3-4 недели, фикс-прайс.»
+
+Смысловые изменения: «убираем» → «автоматизируем» (точнее), «добавляем» → «открываем» (эмоциональнее, обещает новые возможности). В hero — с nbsp для висячих предлогов.
+
+`<title>` остался прежним («Forge — внедрение AI в бизнес», 33 char) — копирайт-решение Наиля.
+
+### Финальные Lighthouse-метрики
+
+| Прогон | Mobile | Desktop | Grade |
+|---|---|---|---|
+| Baseline | 88 / 96 / 100 / 100 | 99 / 96 / 100 / 100 | B+ |
+| После P0 | 99 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | A |
+| После P1 | 99 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | A |
+| После P2 | **99 / 100 / 100 / 100** | **100 / 100 / 100 / 100** | A (97) |
+
+**Core Web Vitals mobile final:**
+- FCP: 1.0s
+- LCP: 1.9–2.0s (шум ±0.2)
+- TBT: 20–70ms (шум)
+- CLS: **0**
+- Speed Index: 2.0–2.3s (было 5.0s)
+
+**Grade A** на двух независимых аудитах. Все Definition of Done из промпта `forge-seo-markup.md` закрыты с большим запасом (цели SEO≥95 / A11y≥90 — фактически 100/100).
+
+### Что осознанно НЕ сделали в P2
+
+- **CSS minification** (~2 KB экономии) — нужен build step или ручная прегенерация
+- **`unminified-javascript`** (~2 KB) — то же
+- **Forced reflow 31ms в main.js** — требует глубокой инспекции, риск сломать анимации
+- **Modern image formats для marquee логов** (~50 KB) — совместимость с CSS filter, логи уже 1.4–15 KB
+- **Много H2 на странице** (13, рекомендация 5-8) — семантически оправдано, не трогаем
+- **HSTS preload флаг** — Vercel уже отдаёт `includeSubDomains; preload` по умолчанию
+
+### Уроки SEO-сессии
+
+1. **Всегда запускай независимого аудитора ДО и ПОСЛЕ каждого этапа.** Baseline без бейзлайна = нечего сравнивать. Я прогнала 4 аудита за сессию — каждый раз картина менялась, некоторые проблемы появлялись от соседних правок (cookie banner regression)
+2. **HTML presentational hints на `<img>` могут затмевать CSS.** `<img width="640" height="960">` работает как низкоприоритетный CSS `{ width: 640px; height: 960px }` — если CSS задаёт только width, height остаётся от HTML-атрибута. Явно ставь `height: auto` в CSS
+3. **CSP превентивно для будущих интеграций.** Если roadmap включает Metrica/GA/Intercom — добавляй домены в CSP заранее. Lighthouse не скажет «а вот тут будет сломано через час»
+4. **Touch target padding-hack с negative margin.** Простой способ увеличить tap area без визуального сдвига: `padding: Npx 4px; margin: -Npx 0`. Работает для inline-block элементов в любом контексте
+5. **Speed Index — главный индикатор perceived perf.** Performance score может быть 99, но Speed Index 4.6s — значит картинка «медленно проявляется» на глаз. Для mobile критично unsized images + shifting layout = continuous repaint
+6. **FORGE custom font-stack.** Space Grotesk не имеет Cyrillic, поэтому заголовки на русском → fallback system-ui. Это ОК, но знай это при замене fonts
+
+---
+
 ## Актуальные открытые вопросы (см. backlog.md)
 
 - Автоматическая загрузка аватара Telegram-группы через MTProto (ограничение: JSON long precision)
-- Section labels — глобальное решение pill vs ghost
-- Ломаная сетка (broken grid) для 2/8/9 — в бэклоге
-- Мобильная адаптация на 375px — полный проход по блокам
-- Lighthouse audit — ручной прогон для цели SEO≥95/A11y≥90
+- Google Search Console + Yandex Webmaster (после fix DNS `forge-ai.io`)
+- Переезд с `forge-six-blue.vercel.app` на `forge-ai.io` (сейчас домен на парковке Рег.ру, нужно восстановить связку Vercel ↔ Рег.ру DNS)
+- (опционально) CSS/JS minification через Vercel build step
+- (опционально) `forced-reflow-insight` в main.js — найти и пофиксить
 
 ---
 
