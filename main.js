@@ -591,8 +591,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (cookieRejectBtn) {
     cookieRejectBtn.addEventListener('click', () => {
+      const wasLoaded = metricaLoaded;
       saveConsent(false);
       hideBanner();
+      // If Metrica was already running in this page load, the JS runtime still
+      // holds ym() and webvisor sockets. Saving the rejection alone doesn't stop
+      // in-flight tracking. Reload to enforce §9.6 of the Privacy Policy
+      // ("после отзыва согласия передача данных прекращается") immediately.
+      if (wasLoaded) {
+        window.location.reload();
+      }
     });
   }
   if (manageCookiesBtn) {
