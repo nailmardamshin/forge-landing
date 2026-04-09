@@ -38,7 +38,7 @@
           href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7W0Q5n-wU.woff2"
           crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260409_form">
+    <link rel="stylesheet" href="style.css?v=20260409_form2">
     <noscript><style>.fade-in { opacity: 1 !important; transform: none !important; }</style></noscript>
     <script type="application/ld+json">
     {
@@ -606,29 +606,36 @@
     <div class="modal-backdrop" data-close></div>
     <div class="modal-box">
         <button type="button" class="modal-close" aria-label="Закрыть" data-close>×</button>
-        <h2 id="leadModalTitle">Получить план внедрения&nbsp;AI</h2>
-        <p class="modal-sub">Ответим в&nbsp;течение дня. 30&nbsp;минут&nbsp;— разберём ваши процессы, покажем где AI&nbsp;даст эффект.</p>
-        <form class="lead-form" id="leadForm" novalidate>
-            <label>
-                <span>Имя</span>
-                <input type="text" name="name" required autocomplete="name">
-            </label>
-            <label>
-                <span>Компания</span>
-                <input type="text" name="company" required autocomplete="organization">
-            </label>
-            <label>
-                <span>Telegram или телефон</span>
-                <input type="text" name="contact" required placeholder="@username или +7..." autocomplete="tel">
-            </label>
-            <label>
-                <span>Задача <em>— опционально</em></span>
-                <textarea name="task" rows="3" placeholder="Коротко о&nbsp;процессе, который хочется автоматизировать"></textarea>
-            </label>
-            <input type="hidden" name="source" value="modal">
-            <button type="submit" class="btn btn-primary lead-submit">Отправить</button>
-            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
-        </form>
+        <div class="modal-content" id="modalContent">
+            <h2 id="leadModalTitle">Получить план внедрения&nbsp;AI</h2>
+            <p class="modal-sub">Ответим в&nbsp;течение дня. 60&nbsp;минут&nbsp;— разберём ваши процессы, покажем где AI&nbsp;даст эффект.<br>Заполните форму или напишите нам в&nbsp;<a href="https://t.me/nmardamshin" target="_blank" rel="noopener">Telegram</a>.</p>
+            <form class="lead-form" id="leadForm" novalidate>
+                <label>
+                    <span>Имя</span>
+                    <input type="text" name="name" required placeholder=" " autocomplete="name">
+                </label>
+                <label>
+                    <span>Компания</span>
+                    <input type="text" name="company" required placeholder=" " autocomplete="organization">
+                </label>
+                <label>
+                    <span>Telegram или телефон</span>
+                    <input type="text" name="contact" required placeholder="@username или +7..." autocomplete="tel">
+                </label>
+                <label>
+                    <span>Задача <em>— опционально</em></span>
+                    <textarea name="task" rows="3" placeholder="Где теряете время? Что хотите автоматизировать или добавить?"></textarea>
+                </label>
+                <input type="hidden" name="source" value="modal">
+                <button type="submit" class="btn btn-primary lead-submit">Отправить</button>
+                <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+            </form>
+        </div>
+        <div class="modal-success" id="modalSuccess" hidden>
+            <div class="modal-success-icon">✓</div>
+            <h2>Отправлено!</h2>
+            <p>Свяжемся с&nbsp;вами в&nbsp;течение дня.</p>
+        </div>
     </div>
 </div>
 

@@ -288,9 +288,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.querySelector('#leadModal');
   const leadForm = document.querySelector('#leadForm');
   const formStatus = document.querySelector('#formStatus');
+  const modalContent = document.querySelector('#modalContent');
+  const modalSuccess = document.querySelector('#modalSuccess');
+
+  function resetModalState() {
+    if (modalContent) modalContent.hidden = false;
+    if (modalSuccess) modalSuccess.hidden = true;
+    if (leadForm) leadForm.reset();
+    if (formStatus) {
+      formStatus.className = 'form-status';
+      formStatus.textContent = '';
+    }
+  }
 
   function openModal(source) {
     if (!modal) return;
+    resetModalState();
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-open');
@@ -309,6 +322,8 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('modal-open');
+    // Reset state after close animation
+    setTimeout(resetModalState, 400);
   }
 
   // Open triggers
@@ -370,15 +385,15 @@ document.addEventListener('DOMContentLoaded', () => {
           throw new Error(err.error || 'Request failed');
         }
 
-        formStatus.className = 'form-status success';
-        formStatus.textContent = '✓ Отправлено! Свяжемся с вами в течение дня.';
-        leadForm.reset();
-        setTimeout(closeModal, 2500);
+        // Success — replace form content with success block
+        if (modalContent) modalContent.hidden = true;
+        if (modalSuccess) modalSuccess.hidden = false;
+        // Auto-close after 6 seconds
+        setTimeout(closeModal, 6000);
       } catch (error) {
         console.error('Lead submission error:', error);
         formStatus.className = 'form-status error';
         formStatus.innerHTML = '✗ Не удалось отправить. Напишите в Telegram: <a href="https://t.me/nmardamshin">@nmardamshin</a>';
-      } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
       }

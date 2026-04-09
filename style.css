@@ -1618,6 +1618,7 @@ footer {
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
+  color: var(--orange);
   cursor: pointer;
   transition: transform 0.1s, box-shadow 0.1s;
   -webkit-tap-highlight-color: transparent;
@@ -1643,7 +1644,19 @@ footer {
   font-size: var(--text-sm);
   color: var(--text-muted);
   margin-bottom: 24px;
-  line-height: 1.5;
+  line-height: 1.55;
+}
+
+.modal-sub a {
+  color: var(--orange);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.modal-sub a:hover {
+  text-decoration-thickness: 3px;
 }
 
 /* Form */
@@ -1697,9 +1710,23 @@ footer {
   transform: translate(-1px, -1px);
 }
 
-.lead-form input[type="text"]:invalid:not(:placeholder-shown),
-.lead-form textarea:invalid:not(:placeholder-shown) {
+/* Required empty → red border (obligatory indicator) */
+.lead-form input[type="text"][required]:placeholder-shown {
   border-color: #d14;
+}
+
+/* Required filled → green border (valid indicator) */
+.lead-form input[type="text"][required]:not(:placeholder-shown):valid {
+  border-color: #16a34a;
+}
+
+/* Red label hint for required-empty */
+.lead-form label:has(input[required]:placeholder-shown) span {
+  color: #d14;
+}
+
+.lead-form label:has(input[required]:not(:placeholder-shown):valid) span {
+  color: #16a34a;
 }
 
 .lead-form textarea {
@@ -1730,16 +1757,61 @@ footer {
   font-weight: 600;
 }
 
-.form-status.success {
-  display: block;
-  background: var(--green-light);
-  color: var(--text);
-}
-
 .form-status.error {
   display: block;
   background: #ffe0e0;
   color: var(--text);
+}
+
+.form-status a {
+  color: var(--orange);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Success state — replaces form content */
+.modal-success {
+  text-align: center;
+  padding: 48px 20px 32px;
+  animation: success-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes success-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--black);
+  background: var(--orange);
+  border: var(--border-thick);
+  box-shadow: var(--shadow);
+  line-height: 1;
+}
+
+.modal-success h2 {
+  margin-bottom: 12px;
+  padding-right: 0;
+}
+
+.modal-success p {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  margin-bottom: 0;
 }
 
 @media (max-width: 640px) {
@@ -1751,6 +1823,14 @@ footer {
   }
   .modal-box h2 {
     font-size: 1.3rem;
+  }
+  .modal-success {
+    padding: 32px 10px 20px;
+  }
+  .modal-success-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 2.4rem;
   }
 }
 
