@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Explicit proof-of-consent fields for legal audit (FZ-152)
       data.consent = true;
       data.consent_timestamp = new Date().toISOString();
-      data.consent_text_version = '2025-10-15';
+      data.consent_text_version = '2025-10-01';
 
       try {
         const response = await fetch('/api/lead', {
@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const METRICA_COUNTER_ID = 108474355;
   const CONSENT_KEY = 'forge_cookie_consent';
-  const CONSENT_VERSION = '2025-10-15';
+  const CONSENT_VERSION = '2025-10-01';
 
   // Goal tracker — safe no-op if Metrica is not loaded (no consent, blocked, etc.)
   // Register matching goal IDs in Metrica UI: Настройки счётчика → Цели → JavaScript-событие
