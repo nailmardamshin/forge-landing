@@ -403,7 +403,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!response.ok) {
           const err = await response.json().catch(() => ({}));
-          throw new Error(err.error || 'Request failed');
+          const serverMessage = err && err.error ? err.error : null;
+          const status = response.status;
+          const enriched = new Error(serverMessage || `HTTP ${status}`);
+          enriched.serverMessage = serverMessage;
+          enriched.status = status;
+          throw enriched;
         }
 
         // Success — replace form content with success block
@@ -414,7 +419,13 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (error) {
         console.error('Lead submission error:', error);
         formStatus.className = 'form-status error';
-        formStatus.innerHTML = '✗ Не удалось отправить. Напишите в Telegram: <a href="https://t.me/nmardamshin">@nmardamshin</a>';
+        // Show server message if we have it (e.g. "Требуется согласие...")
+        // Otherwise fall back to network-error copy with Telegram lifeline
+        if (error && error.serverMessage) {
+          formStatus.textContent = '✗ ' + error.serverMessage;
+        } else {
+          formStatus.innerHTML = '✗ Не&nbsp;удалось отправить. Проверьте интернет или напишите в&nbsp;<a href="https://t.me/nmardamshin" target="_blank" rel="noopener">Telegram</a>.';
+        }
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
       }
