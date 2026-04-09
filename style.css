@@ -1045,6 +1045,9 @@ section:nth-child(even) .section-label {
 
 .about-photo img {
   width: 200px;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
   border: var(--border-thick);
   box-shadow: var(--shadow-lg);
   display: block;
