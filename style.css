@@ -1175,14 +1175,15 @@ footer a:hover {
 }
 .footer-legal a {
   color: #777;
-  text-decoration: none;
-  border-bottom: 1px dotted #555;
-  padding-bottom: 1px;
-  transition: color 0.15s, border-color 0.15s;
+  text-decoration: underline;
+  text-decoration-color: #444;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s, text-decoration-color 0.15s;
 }
 .footer-legal a:hover {
   color: var(--orange);
-  border-bottom-color: var(--orange);
+  text-decoration-color: var(--orange);
 }
 .footer-legal .footer-sep {
   color: #444;
@@ -1826,8 +1827,9 @@ footer a:hover {
 }
 
 /* ===== Consent checkbox (neobrutalism) ===== */
-.form-consent {
+.lead-form label.form-consent {
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
   gap: 14px;
   cursor: pointer;
