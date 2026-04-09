@@ -354,6 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const submitBtn = leadForm.querySelector('.lead-submit');
       const originalText = submitBtn.textContent;
 
+      // Clear any stale error states from previous submit attempts
+      const consentLabelInit = leadForm.querySelector('.form-consent');
+      if (consentLabelInit) consentLabelInit.classList.remove('error');
+
       // Client-side validation
       const required = ['name', 'company', 'contact'];
       for (const field of required) {

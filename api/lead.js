@@ -63,6 +63,13 @@ export default async function handler(req, res) {
     const tgToken = process.env.TELEGRAM_BOT_TOKEN;
     const tgChatId = process.env.TELEGRAM_CHAT_ID;
 
+    // Refuse to silently accept leads if no output channels are configured
+    // (misconfigured Vercel env vars — otherwise user sees success, lead is lost)
+    if (!airtableToken && (!tgToken || !tgChatId)) {
+      console.error('No output channels configured — rejecting lead to avoid data loss');
+      return res.status(500).json({ error: 'Сервис временно недоступен' });
+    }
+
     const errors = [];
 
     // Write to Airtable
