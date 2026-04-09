@@ -293,8 +293,65 @@ Soft neobrutalism. 12 секций. Container 900px. Mobile-first. Деплой 
 **Что осталось SEO (после привязки кастомного домена):**
 - Глобально заменить `nailmardamshin.github.io/forge` → `новый-домен` в index.html / robots.txt / sitemap.xml
 - Google Search Console + Yandex Webmaster (требуют верификацию домена)
-- Lighthouse audit в Chrome DevTools (ручной прогон)
 - Analytics (GA4 / Я.Метрика) — отдельный спринт с cookie-banner и политикой ПДн
+
+### Lighthouse audit (09.04.2026)
+
+Прогнан через `npx lighthouse` на live (Vercel). Обе конфигурации:
+
+| Категория | Desktop | Mobile |
+|---|:---:|:---:|
+| Performance | **99** | **96** |
+| Accessibility | **100** | **100** |
+| Best Practices | **100** | **100** |
+| SEO | **100** | **100** |
+
+Цели промпта (SEO ≥ 95, A11y ≥ 90) перевыполнены с большим запасом.
+
+Изначально mobile a11y был 91 — Lighthouse нашёл 2 проблемы в footer:
+1. Текст #666 на #000 = 3.67:1 контраст (WCAG AA требует 4.5:1 для normal text)
+2. Telegram-ссылка в footer полагается только на цвет (`text-decoration: none` глобально)
+
+Фикс (`41a715a`):
+```css
+footer { color: #999; }  /* было #666, контраст 7.6:1 */
+footer a { color: var(--orange); text-decoration: underline; text-underline-offset: 2px; }
+footer a:hover { color: #fff; }
+```
+
+После фикса mobile a11y → **100**.
+
+### Мобильная адаптация 375/360/320 (09.04.2026)
+
+Проход по live через Playwright (mobile viewport, reduced-motion эмуляция, full-page screenshot).
+
+**Результаты:**
+- Ноль horizontal overflow на всех трёх ширинах (`scrollWidth === clientWidth`)
+- Все 12 секций разложены корректно, нет обрезанного текста, touch-targets адекватные
+- Burger menu, accordion (барьеры), модалка лид-формы — все работают на touch
+- Marquee скролл, анимации, hover-эффекты (без hover на touch) — OK
+
+**Найденный и закрытый баг (`e433642`): mobile-menu overflow.**
+
+- `.mobile-menu` использовал `justify-content: center` + padding `80px / 40px`
+- 10 пунктов + CTA = ~724px контента
+- Доступно при высоте 812 (iPhone 12): 692px → overflow 32px
+- Доступно при высоте 667 (iPhone SE): 547px → overflow 177px
+- Центрирование резало первый пункт «Потенциал» сверху (уходил под nav)
+
+Fix:
+```css
+.mobile-menu {
+  justify-content: flex-start;  /* было center */
+  overflow-y: auto;              /* scroll fallback */
+  overscroll-behavior: contain;
+}
+.mobile-menu a {
+  padding: 12px 0;  /* было 14px */
+}
+```
+
+Теперь на всех экранах первый пункт виден сразу под nav bar. Если не влезает (очень короткий экран) — скроллится внутри меню.
 
 ---
 

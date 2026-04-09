@@ -7,7 +7,6 @@
 ### Дизайн
 - [ ] Section labels — решить глобально: pill или ghost (сейчас pill везде)
 - [ ] Ломаная сетка: расширить контейнер для таблицы (#2), кейсов (#9), альтернатив (#8)
-- [ ] Мобильная адаптация — полный проход по всем блокам на 375px
 - [ ] SVG логотипы клиентов вместо текста (где не найдены)
 - [ ] Микро-CTA под блоком "Узнаёте?" — "Если хоть одно — пора поговорить" + ссылка на аудит (opt)
 
@@ -18,7 +17,6 @@
 - [ ] Google Search Console + Yandex Webmaster (после привязки домена)
 - [ ] Analytics (GA4 или Я.Метрика) — отдельный спринт с cookie-banner и политикой ПДн
 - [ ] Обновить canonical/og:url/sameAs на кастомный домен (сейчас github.io placeholder)
-- [ ] Lighthouse audit на live (SEO ≥ 95, A11y ≥ 90) — ручной прогон в Chrome DevTools
 
 ## Done
 
@@ -61,7 +59,7 @@
 ### SEO
 - [x] robots.txt
 - [x] sitemap.xml
-- [x] og-template.html + OG-image с тёмной полосой и enterprise логотипами
+- [x] og-template.html + OG-image с тёмной полосой и enterprise логотипами (русский Норникель)
 - [x] Фавиконки (SVG + PNG 32 + apple-touch-icon 180, оранжевая F на cream)
 - [x] Мета-теги (title, description, og:*, twitter card, canonical, theme-color, mobile)
 - [x] JSON-LD structured data: ProfessionalService + FAQPage + WebSite
@@ -69,8 +67,16 @@
 - [x] FAQPage answers byte-match DOM (rich snippets ready)
 - [x] a11y: main landmark, skip link, prefers-reduced-motion
 - [x] Inter 400 cyrillic preload, decoding="async" на marquee лого
-- [x] Норникель: белый SVG с кириллическим "НОРНИКЕЛЬ" для marquee
+- [x] Норникель: белый SVG с кириллическим "НОРНИКЕЛЬ" для marquee + OG
 - [x] W3C HTML validator: 0 errors / 0 warnings на live
+- [x] **Lighthouse desktop: 99/100/100/100** (Perf/A11y/BP/SEO)
+- [x] **Lighthouse mobile: 96/100/100/100** (Perf/A11y/BP/SEO)
+- [x] a11y footer fix: контраст #666→#999, orange underlined Telegram link
+
+### Мобильная адаптация
+- [x] Полный проход по всем блокам на 375/360/320 — ноль horizontal overflow
+- [x] Burger menu, accordion, модалка формы — все работают на touch
+- [x] Fix: mobile-menu overflow (первый пункт "Потенциал" обрезался на экранах ≤ 812px) — justify-content center→flex-start + overflow-y auto
 
 ### Анимации и интерактив
 - [x] Hero entrance stagger (label → h1 → subtitle → cta, delay 0.15-0.75s)
