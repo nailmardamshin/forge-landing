@@ -620,9 +620,7 @@ section:nth-child(even) .section-label {
 }
 
 .trigger-card h3 {
-  font-size: var(--text-base);
-  margin-bottom: 6px;
-  color: var(--orange);
+  margin-bottom: 8px;
 }
 
 .trigger-card p {
@@ -978,7 +976,6 @@ section:nth-child(even) .section-label {
 }
 
 .guarantee-card h3 {
-  font-size: var(--text-base);
   position: relative;
   z-index: 1;
 }
