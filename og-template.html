@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Forge OG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      width:1200px;height:630px;
+      font-family:'Inter',-apple-system,Helvetica,Arial,sans-serif;
+      background:#F5F5F0;color:#000;
+      overflow:hidden;
+    }
+    .frame{
+      position:relative;
+      width:1200px;height:630px;
+      border:8px solid #000;
+      background:#F5F5F0;
+      padding:60px 80px 60px;
+      display:flex;flex-direction:column;justify-content:space-between;
+      overflow:hidden;
+    }
+    .top{
+      position:relative;z-index:2;
+    }
+    .brand{
+      font-family:'Space Grotesk','Arial Black',Arial,sans-serif;
+      font-weight:700;
+      font-size:148px;
+      line-height:0.9;
+      letter-spacing:-4px;
+      color:#000;
+    }
+    .brand .f{color:#F97316;}
+    .headline{
+      font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+      font-weight:600;
+      font-size:64px;
+      line-height:1.08;
+      letter-spacing:-1.5px;
+      margin-top:28px;
+      max-width:820px;
+    }
+    .logos{
+      position:relative;z-index:2;
+      width:780px;
+      display:flex;align-items:center;justify-content:space-between;
+      filter:grayscale(1) brightness(0) contrast(1);
+      opacity:0.55;
+    }
+    .logos img{
+      max-height:48px;
+      max-width:140px;
+      width:auto;height:auto;
+      object-fit:contain;
+      flex-shrink:0;
+    }
+    .accent{
+      position:absolute;
+      right:-90px;top:-90px;
+      width:400px;height:400px;
+      background:#F97316;
+      border:8px solid #000;
+      transform:rotate(12deg);
+      z-index:1;
+    }
+    .accent-f{
+      position:absolute;
+      right:50px;top:70px;
+      font-family:'Space Grotesk','Arial Black',Arial,sans-serif;
+      font-weight:700;
+      font-size:280px;
+      line-height:0.82;
+      color:#fff;
+      z-index:2;
+      transform:rotate(-4deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="accent"></div>
+    <div class="accent-f">F</div>
+    <div class="top">
+      <div class="brand"><span class="f">F</span>ORGE</div>
+      <div class="headline">Внедряем AI<br>в&nbsp;бизнес</div>
+    </div>
+    <div class="logos">
+      <img src="assets/logos/alfa-bank.png" alt="Альфа-Банк">
+      <img src="assets/logos/nornickel.svg" alt="Норникель">
+      <img src="assets/logos/mvideo.png" alt="М.Видео">
+      <img src="assets/logos/khl.png" alt="КХЛ">
+      <img src="assets/logos/sber.png" alt="Сбер">
+    </div>
+  </div>
+</body>
+</html>
