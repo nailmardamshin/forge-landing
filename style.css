@@ -1155,6 +1155,30 @@ footer a {
 footer a:hover {
   color: #fff;
 }
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 10px;
+  font-size: var(--text-xs);
+}
+.footer-legal .footer-sep {
+  color: #555;
+}
+@media (max-width: 480px) {
+  .footer-legal .footer-sep { display: none; }
+  .footer-legal {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
 
 /* ===== Animations ===== */
 /* Fallback: if JS fails or motion reduced, show content */
@@ -1783,6 +1807,70 @@ footer a:hover {
   opacity: 0.6;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+/* ===== Consent checkbox ===== */
+.form-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  padding: 4px 0 0;
+  margin-top: 4px;
+  user-select: none;
+}
+.form-consent input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.form-consent .consent-box {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--black);
+  background: var(--white);
+  position: relative;
+  margin-top: 2px;
+  transition: background 0.12s ease;
+}
+.form-consent input[type="checkbox"]:checked + .consent-box {
+  background: var(--orange);
+}
+.form-consent input[type="checkbox"]:checked + .consent-box::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.form-consent input[type="checkbox"]:focus-visible + .consent-box {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+.form-consent .consent-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.form-consent .consent-text a {
+  color: var(--orange);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.form-consent .consent-text a:hover {
+  color: var(--black);
+}
+.form-consent.error .consent-box {
+  border-color: #d33;
+  box-shadow: 0 0 0 2px #ffd5d5;
 }
 
 .form-status {

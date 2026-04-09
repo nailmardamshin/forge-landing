@@ -38,7 +38,7 @@
           href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7W0Q5n-wU.woff2"
           crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260409_mobile_menu">
+    <link rel="stylesheet" href="style.css?v=20260409_legal_consent">
     <noscript><style>.fade-in { opacity: 1 !important; transform: none !important; }</style></noscript>
     <script type="application/ld+json">
     {
@@ -630,8 +630,13 @@
 
 <!-- Footer -->
 <footer>
-    <div class="container">
-        FORGE &mdash; внедрение AI в&nbsp;бизнес &bull; 2026 &bull; <a href="https://t.me/nmardamshin">Telegram</a>
+    <div class="container footer-inner">
+        <div class="footer-brand">FORGE &mdash; внедрение AI в&nbsp;бизнес &bull; 2026 &bull; <a href="https://t.me/nmardamshin">Telegram</a></div>
+        <nav class="footer-legal" aria-label="Юридические документы">
+            <a href="legal/privacy-policy">Политика обработки персональных данных</a>
+            <span class="footer-sep" aria-hidden="true">&bull;</span>
+            <a href="legal/consent">Согласие на обработку</a>
+        </nav>
     </div>
 </footer>
 
@@ -661,6 +666,13 @@
                     <textarea name="task" rows="3" placeholder="Где ваша команда теряет больше всего времени?"></textarea>
                 </label>
                 <input type="hidden" name="source" value="modal">
+                <label class="form-consent">
+                    <input type="checkbox" name="consent" id="leadConsent">
+                    <span class="consent-box" aria-hidden="true"></span>
+                    <span class="consent-text">
+                        Нажимая «Отправить», я&nbsp;соглашаюсь с&nbsp;<a href="legal/privacy-policy" target="_blank" rel="noopener">политикой обработки персональных данных</a> и&nbsp;даю <a href="legal/consent" target="_blank" rel="noopener">согласие на&nbsp;обработку персональных данных</a>.
+                    </span>
+                </label>
                 <button type="submit" class="btn btn-primary lead-submit">Отправить</button>
                 <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
             </form>
@@ -673,6 +685,6 @@
     </div>
 </div>
 
-<script src="main.js?v=20260409_table" defer></script>
+<script src="main.js?v=20260409_legal_consent" defer></script>
 </body>
 </html>

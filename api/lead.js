@@ -46,6 +46,19 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Заполните обязательные поля' });
     }
 
+    // Validate consent (FZ-152 — server side, client can be bypassed)
+    if (body.consent !== true) {
+      return res.status(400).json({ error: 'Требуется согласие на обработку персональных данных' });
+    }
+    const consentTimestamp = typeof body.consent_timestamp === 'string' && body.consent_timestamp
+      ? body.consent_timestamp
+      : new Date().toISOString();
+    const consentTextVersion = String(body.consent_text_version || '').trim().slice(0, 50) || 'unknown';
+
+    // Capture IP and User-Agent for proof of consent
+    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || '';
+    const userAgent = String(req.headers['user-agent'] || '').slice(0, 1000);
+
     const airtableToken = process.env.AIRTABLE_API_KEY;
     const tgToken = process.env.TELEGRAM_BOT_TOKEN;
     const tgChatId = process.env.TELEGRAM_CHAT_ID;
@@ -70,7 +83,12 @@ export default async function handler(req, res) {
                 Contact: contact,
                 Task: task,
                 Source: source,
-                Status: 'New'
+                Status: 'New',
+                'Consent given': true,
+                'Consent timestamp': consentTimestamp,
+                'Consent text version': consentTextVersion,
+                IP: ip,
+                'User agent': userAgent
               },
               typecast: true
             })
@@ -104,6 +122,7 @@ export default async function handler(req, res) {
           lines.push('', `📝 ${escapeHtml(task)}`);
         }
         lines.push('', `📍 Источник: <code>${source}</code>`);
+        lines.push(`✅ Согласие на ОПД получено (v${escapeHtml(consentTextVersion)})`);
 
         const tgRes = await fetch(
           `https://api.telegram.org/bot${tgToken}/sendMessage`,

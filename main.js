@@ -366,6 +366,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
+      // Consent checkbox — must be actively checked (FZ-152 / GDPR)
+      const consentInput = leadForm.querySelector('input[name="consent"]');
+      const consentLabel = leadForm.querySelector('.form-consent');
+      if (consentInput && !consentInput.checked) {
+        if (consentLabel) consentLabel.classList.add('error');
+        consentInput.focus();
+        formStatus.className = 'form-status error';
+        formStatus.textContent = 'Нужно согласие на обработку персональных данных';
+        return;
+      }
+      if (consentLabel) consentLabel.classList.remove('error');
+
       submitBtn.disabled = true;
       submitBtn.textContent = 'Отправляем…';
       formStatus.className = 'form-status';
@@ -373,6 +385,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const formData = new FormData(leadForm);
       const data = Object.fromEntries(formData.entries());
+      // Explicit proof-of-consent fields for legal audit (FZ-152)
+      data.consent = true;
+      data.consent_timestamp = new Date().toISOString();
+      data.consent_text_version = '2025-10-01';
 
       try {
         const response = await fetch('/api/lead', {
