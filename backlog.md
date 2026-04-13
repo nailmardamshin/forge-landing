@@ -1,30 +1,32 @@
 # Forge Landing — Backlog
 
-> Последнее обновление: 09.04.2026 — SEO-пасс (JSON-LD, favicons, OG, a11y)
+> Последнее обновление: 13.04.2026 — пост-миграция Vercel → Beget
 
 ## Pending
 
-### SEO / аналитика
-- [ ] Google Search Console + Yandex Webmaster
-  - Подтвердить владение forge-ai.io (DNS TXT через Vercel)
-  - Подать sitemap https://forge-ai.io/sitemap.xml
-  - Настроить мониторинг покрытия и позиций
+### После миграции на Beget (13.04.2026)
+- [ ] **Google Search Console — переверифицировать**
+  - DNS был на Cloudflare, теперь на Beget → TXT-запись верификации слетела
+  - Варианты: HTML-файл верификация (проще) или TXT через Beget DNS-панель (Домены → forge-ai.io → DNS)
+  - После верификации: переподать sitemap `https://forge-ai.io/sitemap.xml`
+  - Проверить «Покрытие/Индексирование» — не было ли всплеска 5xx за 10-13 апреля
 
-- [ ] Аналитика — отдельный спринт (решить GA4 vs Я.Метрика, подготовить legal)
-  1. **Выбрать платформу:** GA4 (удобнее для int), Я.Метрика (лучше для ru-рынка + Вебвизор), или обе
-  2. **Legal:** политика обработки ПДн + cookie-banner на сайте (обязательно по 152-ФЗ)
-     - Текст политики (юрист или шаблон из iubenda/tilda)
-     - Cookie-banner с выбором (Essential / Analytics / All)
-     - Gate на инициализацию трекеров до согласия
-  3. **Events для трека:**
-     - `lead_form_open` (открыта модалка)
-     - `lead_form_submit` (успешная отправка)
-     - `cta_click` (hero / final / nav) с source label
-     - `section_view` (scroll-depth: 25/50/75/100%)
-     - `external_click` (Telegram, Tetraform)
-  4. **UTM-конвенция** для outbound ссылок (если будет реклама/контент-маркетинг)
-  5. **Dashboard:** конверсия hero-CTA → форма → отправка, bounce-rate по источникам
-  6. **Интеграция** с Airtable (FORGE CRM Leads) — атрибуция лида к источнику
+- [ ] **Yandex Webmaster — переверифицировать** (та же причина)
+
+- [ ] **Cache headers: `.htaccess` immutable не применяется Beget'ом**
+  - `.htaccess` настроен правильно (`max-age=31536000, immutable`)
+  - Но live отдаёт: шрифты/логотипы `max-age=2592000` (30 дн), CSS/JS `max-age=604800` (7 дн)
+  - Вероятно `mod_expires` / `mod_headers` не включены на shared hosting
+  - Написать в поддержку Beget: «Прошу включить mod_expires и mod_headers для forge-ai.io»
+  - Не срочно — всё работает, просто повторные визиты чуть медленнее
+
+- [ ] **Проверить Metrica кабинет** (metrika.yandex.ru → 108474355)
+  - Был ли провал данных 11-13 апреля (ожидаемо при миграции)
+  - Цели регистрируются ли за последние 24ч
+  - Webvisor: поля формы замаскированы в записях
+
+### SEO / аналитика
+- [x] ~~Аналитика~~ — Yandex Метрика подключена (counter 108474355), cookie consent, goals, Webvisor masking — всё работает
 
 - [ ] Rich Results Test на forge-ai.io — убедиться что FAQPage даёт звёздочки в выдаче (https://search.google.com/test/rich-results)
 - [ ] Schema.org validator на forge-ai.io — финальная валидация ProfessionalService и WebSite
